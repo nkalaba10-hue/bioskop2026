@@ -1,0 +1,52 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package rs.ac.bg.fon.ai.server.SOprojection;
+
+import java.util.List;
+
+import rs.ac.bg.fon.ai.communication.model.Projection;
+import rs.ac.bg.fon.ai.server.abstractso.AbstractSO;
+
+/**
+ *
+ * @author nkala
+ */
+public class GetProjectionByIdSO extends AbstractSO {
+
+    private Projection result;
+
+    public Projection getResult() {
+        return result;
+    }
+
+    @Override
+    protected void precondition(Object param) throws Exception {
+        if (!(param instanceof Long)) {
+            throw new Exception("Invalid parameter type - expected Long ID");
+        }
+
+        Long projectionId = (Long) param;
+
+        if (projectionId == null || projectionId <= 0) {
+            throw new Exception("Invalid projection ID");
+        }
+    }
+
+    @Override
+    protected void executeOperation(Object param) throws Exception {
+        Long projectionId = (Long) param;
+        Projection template = new Projection();
+
+        String query = " WHERE p.id = " + projectionId;
+        List resultList = repository.getByQuery(template, query);
+
+        if (resultList.isEmpty()) {
+            throw new Exception("Projection with ID " + projectionId + " not found");
+        }
+
+        result = (Projection) resultList.get(0);
+        System.out.println("  → Retrieved projection: " + result.getFilm().getTitle() + " - " + result.getHall().getName());
+    }
+}
