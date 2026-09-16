@@ -11,13 +11,16 @@ import rs.ac.bg.fon.ai.communication.model.Genre;
 import rs.ac.bg.fon.ai.server.abstractso.AbstractSO;
 
 /**
+ * Sistemska operacija za ucitavanje svih zanrova.
  *
  * @author nkala
+ * @version 1.0
  */
 public class GetAllGenresSO extends AbstractSO {
 
     private List<Genre> result;
 
+    /** @return lista svih ucitanih zanrova. */
     public List<Genre> getResult() {
         return result;
     }

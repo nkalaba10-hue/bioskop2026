@@ -12,8 +12,10 @@ import rs.ac.bg.fon.ai.server.abstractso.AbstractSO;
 import rs.ac.bg.fon.ai.server.repository.DbConnectionFactory;
 
 /**
+ * Sistemska operacija za dodavanje filma i povezivanje filma sa zanrovima.
  *
  * @author nkala
+ * @version 1.0
  */
 public class AddMovieSO extends AbstractSO {
 

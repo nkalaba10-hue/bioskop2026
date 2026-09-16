@@ -11,13 +11,16 @@ import rs.ac.bg.fon.ai.communication.model.Projection;
 import rs.ac.bg.fon.ai.server.abstractso.AbstractSO;
 
 /**
+ * Sistemska operacija za ucitavanje svih projekcija.
  *
  * @author nkala
+ * @version 1.0
  */
 public class GetAllProjectionsSO extends AbstractSO {
 
     private List<Projection> result;
 
+    /** @return lista svih ucitanih projekcija. */
     public List<Projection> getResult() {
         return result;
     }

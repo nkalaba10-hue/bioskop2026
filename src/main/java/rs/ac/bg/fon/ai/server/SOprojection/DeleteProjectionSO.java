@@ -11,8 +11,10 @@ import rs.ac.bg.fon.ai.communication.model.Projection;
 import rs.ac.bg.fon.ai.server.abstractso.AbstractSO;
 
 /**
+ * Sistemska operacija za brisanje buduce projekcije bez prodatih karata.
  *
  * @author nkala
+ * @version 1.0
  */
 public class DeleteProjectionSO extends AbstractSO {
 

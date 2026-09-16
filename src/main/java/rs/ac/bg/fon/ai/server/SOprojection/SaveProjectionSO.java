@@ -12,8 +12,10 @@ import rs.ac.bg.fon.ai.communication.model.ProjectionStatus;
 import rs.ac.bg.fon.ai.server.abstractso.AbstractSO;
 
 /**
+ * Sistemska operacija za cuvanje nove projekcije nakon provere sale i termina.
  *
  * @author nkala
+ * @version 1.0
  */
 public class SaveProjectionSO extends AbstractSO {
 

@@ -13,13 +13,16 @@ import rs.ac.bg.fon.ai.server.abstractso.AbstractSO;
 import rs.ac.bg.fon.ai.server.repository.DbConnectionFactory;
 
 /**
+ * Sistemska operacija za ucitavanje svih zanrova jednog filma.
  *
  * @author nkala
+ * @version 1.0
  */
 public class GetGenresByFilmIdSO extends AbstractSO {
 
     private List<Genre> result;
 
+    /** @return lista zanrova trazenog filma. */
     public List<Genre> getResult() {
         return result;
     }

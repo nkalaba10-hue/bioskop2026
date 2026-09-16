@@ -10,8 +10,10 @@ import rs.ac.bg.fon.ai.communication.model.Ticket;
 import rs.ac.bg.fon.ai.server.abstractso.AbstractSO;
 
 /**
+ * Sistemska operacija za nezavisno cuvanje liste tiketa.
  *
  * @author nkala
+ * @version 1.0
  */
 public class SaveTicketsSO extends AbstractSO {
 

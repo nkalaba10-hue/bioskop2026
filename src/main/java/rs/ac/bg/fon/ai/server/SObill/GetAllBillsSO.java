@@ -13,46 +13,49 @@ import rs.ac.bg.fon.ai.server.SOticket.GetTicketsByBillIdSO;
 import rs.ac.bg.fon.ai.server.abstractso.AbstractSO;
 
 /**
+ * Sistemska operacija za ucitavanje svih racuna sa pripadajucim tiketima.
  *
  * @author nkala
+ * @version 1.0
  */
 public class GetAllBillsSO extends AbstractSO {
 
-    private List<Bill> result;
+   private List<Bill> result;
 
-    public List<Bill> getResult() {
-        return result;
-    }
+   /** @return lista svih ucitanih racuna. */
+   public List<Bill> getResult() {
+       return result;
+   }
 
-    @Override
-    protected void precondition(Object param) throws Exception {
-        // Nema specifičnih preduslova
-    }
+   @Override
+   protected void precondition(Object param) throws Exception {
+       // Nema specifičnih preduslova
+   }
 
-    @Override
-    protected void executeOperation(Object param) throws Exception {
-        Bill template = new Bill();
-        List resultList = repository.getAll(template);
+   @Override
+   protected void executeOperation(Object param) throws Exception {
+       Bill template = new Bill();
+       List resultList = repository.getAll(template);
 
-        result = new ArrayList<>();
-        for (Object entity : resultList) {
-            if (entity instanceof Bill) {
-                Bill bill = (Bill) entity;
+       result = new ArrayList<>();
+       for (Object entity : resultList) {
+           if (entity instanceof Bill) {
+               Bill bill = (Bill) entity;
 
-                // Učitaj tikete za svaki račun
-                List<Ticket> tickets = getTicketsForBill(bill.getId());
-                bill.setTickets(tickets);
+               // Učitaj tikete za svaki račun
+               List<Ticket> tickets = getTicketsForBill(bill.getId());
+               bill.setTickets(tickets);
 
-                result.add(bill);
-            }
-        }
+               result.add(bill);
+           }
+       }
 
-        System.out.println("  → Retrieved " + result.size() + " bills");
-    }
+       System.out.println("  → Retrieved " + result.size() + " bills");
+   }
 
-    private List<Ticket> getTicketsForBill(Long billId) throws Exception {
-        GetTicketsByBillIdSO getTicketsSO = new GetTicketsByBillIdSO();
-        getTicketsSO.execute(billId);
-        return getTicketsSO.getResult();
-    }
+   private List<Ticket> getTicketsForBill(Long billId) throws Exception {
+       GetTicketsByBillIdSO getTicketsSO = new GetTicketsByBillIdSO();
+       getTicketsSO.execute(billId);
+       return getTicketsSO.getResult();
+   }
 }

@@ -13,13 +13,16 @@ import rs.ac.bg.fon.ai.server.SOprojection.GetProjectionByIdSO;
 import rs.ac.bg.fon.ai.server.abstractso.AbstractSO;
 
 /**
+ * Sistemska operacija za ucitavanje tiketa koji pripadaju jednom racunu.
  *
  * @author nkala
+ * @version 1.0
  */
 public class GetTicketsByBillIdSO extends AbstractSO {
 
     private List<Ticket> result;
 
+    /** @return lista tiketa trazenog racuna. */
     public List<Ticket> getResult() {
         return result;
     }

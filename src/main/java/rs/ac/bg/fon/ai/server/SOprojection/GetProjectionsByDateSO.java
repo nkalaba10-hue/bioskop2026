@@ -12,13 +12,16 @@ import rs.ac.bg.fon.ai.communication.model.Projection;
 import rs.ac.bg.fon.ai.server.abstractso.AbstractSO;
 
 /**
+ * Sistemska operacija za ucitavanje projekcija zakazanih za odredjeni datum.
  *
  * @author nkala
+ * @version 1.0
  */
 public class GetProjectionsByDateSO extends AbstractSO {
 
     private List<Projection> result;
 
+    /** @return lista projekcija za trazeni datum. */
     public List<Projection> getResult() {
         return result;
     }

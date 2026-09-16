@@ -8,78 +8,93 @@ import rs.ac.bg.fon.ai.server.repository.DBBroker;
 import rs.ac.bg.fon.ai.server.repository.DbRepository;
 
 /**
+ * Apstraktna osnova za sve sistemske operacije aplikacije.
+ *
+ * Definise standardni tok izvrsavanja operacije: proveru preduslova,
+ * pokretanje transakcije, izvrsavanje poslovne logike i potvrdu ili
+ * ponistavanje transakcije.
  *
  * @author nkala
+ * @version 1.0
  */
 public abstract class AbstractSO {
-    
-    protected DbRepository repository;
+   
+   /** Repozitorijum koji sistemske operacije koriste za pristup bazi. */
+   protected DbRepository repository;
 
-    public AbstractSO() {
-        this.repository = new DBBroker();
-    }
+   /** Kreira sistemsku operaciju sa podrazumevanim DB repozitorijumom. */
+   public AbstractSO() {
+       this.repository = new DBBroker();
+   }
 
-    /**
-     * Template method koji definise tok izvrsavanja sistemske operacije.
-     * 1. Provera preduslova
-     * 2. Pokretanje transakcije  
-     * 3. Izvršavanje operacije
-     * 4. Potvrda transakcije
-     * 5. U slučaju greške - rollback transakcije
-     */
-    public final void execute(Object param) throws Exception {
-        try {
-            System.out.println("Starting system operation: " + this.getClass().getSimpleName());
-            
-            precondition(param);
-            startTransaction();
-            executeOperation(param);
-            commitTransaction();
-            
-            System.out.println("✓ System operation completed successfully: " + this.getClass().getSimpleName());
-            
-        } catch (Exception e) {
-            rollbackTransaction();
-            System.out.println("✗ System operation failed: " + this.getClass().getSimpleName() + " - " + e.getMessage());
-            throw e; // Prosleđujemo grešku dalje
-        }
-    }
+   /**
+    * Template method koji definise tok izvrsavanja sistemske operacije.
+    * 1. Provera preduslova
+    * 2. Pokretanje transakcije  
+    * 3. Izvršavanje operacije
+    * 4. Potvrda transakcije
+    * 5. U slučaju greške - rollback transakcije
+    */
+   /**
+    * Executes this system operation inside a database transaction.
+    *
+    * @param param object processed by this operation
+    * @throws Exception if validation, execution, or transaction handling fails
+    */
+   public final void execute(Object param) throws Exception {
+       try {
+           System.out.println("Starting system operation: " + this.getClass().getSimpleName());
+           
+           precondition(param);
+           startTransaction();
+           executeOperation(param);
+           commitTransaction();
+           
+           System.out.println("✓ System operation completed successfully: " + this.getClass().getSimpleName());
+           
+       } catch (Exception e) {
+           rollbackTransaction();
+           System.out.println("✗ System operation failed: " + this.getClass().getSimpleName() + " - " + e.getMessage());
+           throw e; // Prosleđujemo grešku dalje
+       }
+   }
 
-    /**
-     * Proverava preduslove za izvršavanje operacije.
-     * @param param objekat nad kojim se vrši operacija
-     * @throws Exception ako preduslovi nisu ispunjeni
-     */
-    protected abstract void precondition(Object param) throws Exception;
+   /**
+    * Proverava preduslove za izvršavanje operacije.
+    * @param param objekat nad kojim se vrši operacija
+    * @throws Exception ako preduslovi nisu ispunjeni
+    */
+   protected abstract void precondition(Object param) throws Exception;
 
-    /**
-     * Izvršava glavnu logiku sistemske operacije.
-     * @param param objekat nad kojim se vrši operacija
-     * @throws Exception ako operacija ne uspe
-     */
-    protected abstract void executeOperation(Object param) throws Exception;
+   /**
+    * Izvršava glavnu logiku sistemske operacije.
+    * @param param objekat nad kojim se vrši operacija
+    * @throws Exception ako operacija ne uspe
+    */
+   protected abstract void executeOperation(Object param) throws Exception;
 
-    /**
-     * Pokreće transakciju - uspostavlja konekciju sa bazom.
-     */
-    private void startTransaction() throws Exception {
-        repository.connect();
-        System.out.println("  → Transaction started");
-    }
+   /**
+    * Pokreće transakciju - uspostavlja konekciju sa bazom.
+    */
+   private void startTransaction() throws Exception {
+       repository.connect();
+       System.out.println("  → Transaction started");
+   }
 
-    /**
-     * Potvrđuje transakciju - čuva promene u bazi.
-     */
-    private void commitTransaction() throws Exception {
-        repository.commit();
-        System.out.println("  → Transaction committed");
-    }
+   /**
+    * Potvrđuje transakciju - čuva promene u bazi.
+    */
+   private void commitTransaction() throws Exception {
+       repository.commit();
+       System.out.println("  → Transaction committed");
+   }
 
-    /**
-     * Ponistava transakciju - odbacuje promene u bazi.
-     */
-    private void rollbackTransaction() throws Exception {
-        repository.rollback();
-        System.out.println("  → Transaction rolled back");
-    }
+   /**
+    * Ponistava transakciju - odbacuje promene u bazi.
+    */
+   private void rollbackTransaction() throws Exception {
+       repository.rollback();
+       System.out.println("  → Transaction rolled back");
+   }
 }
+

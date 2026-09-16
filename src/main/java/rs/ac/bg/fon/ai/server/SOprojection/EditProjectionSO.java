@@ -12,8 +12,10 @@ import rs.ac.bg.fon.ai.communication.model.ProjectionStatus;
 import rs.ac.bg.fon.ai.server.abstractso.AbstractSO;
 
 /**
+ * Sistemska operacija za izmenu podataka o postojecoj projekciji.
  *
  * @author nkala
+ * @version 1.0
  */
 public class EditProjectionSO extends AbstractSO {
 

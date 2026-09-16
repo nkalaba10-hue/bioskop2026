@@ -10,13 +10,16 @@ import rs.ac.bg.fon.ai.communication.model.Projection;
 import rs.ac.bg.fon.ai.server.abstractso.AbstractSO;
 
 /**
+ * Sistemska operacija za pronalazenje projekcije po identifikatoru.
  *
  * @author nkala
+ * @version 1.0
  */
 public class GetProjectionByIdSO extends AbstractSO {
 
     private Projection result;
 
+    /** @return pronadjena projekcija. */
     public Projection getResult() {
         return result;
     }

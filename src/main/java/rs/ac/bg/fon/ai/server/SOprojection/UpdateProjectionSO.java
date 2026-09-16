@@ -9,8 +9,10 @@ import rs.ac.bg.fon.ai.communication.model.ProjectionStatus;
 import rs.ac.bg.fon.ai.server.abstractso.AbstractSO;
 
 /**
+ * Sistemska operacija za azuriranje broja prodatih karata i statusa projekcije.
  *
  * @author nkala
+ * @version 1.0
  */
 public class UpdateProjectionSO extends AbstractSO {
 
