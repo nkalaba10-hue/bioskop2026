@@ -27,6 +27,12 @@ public class GetTicketsByBillIdSO extends AbstractSO {
         return result;
     }
 
+    /**
+     * Proverava da li parametar ispunjava poslovne preduslove operacije.
+     *
+     * @param param podatak koji se obradjuje
+     * @throws Exception ako je parametar neispravan ili uslovi nisu ispunjeni
+     */
     @Override
     protected void precondition(Object param) throws Exception {
         if (!(param instanceof Long)) {
@@ -40,6 +46,12 @@ public class GetTicketsByBillIdSO extends AbstractSO {
         }
     }
 
+    /**
+     * Izvrsava poslovnu logiku sistemske operacije nad validiranim parametrom.
+     *
+     * @param param validiran podatak koji se obradjuje
+     * @throws Exception ako operacija ne moze da se izvrsi
+     */
     @Override
     protected void executeOperation(Object param) throws Exception {
         Long billId = (Long) param;
@@ -64,9 +76,17 @@ public class GetTicketsByBillIdSO extends AbstractSO {
         System.out.println("  → Retrieved " + result.size() + " tickets for bill ID: " + billId);
     }
 
+    /**
+     * Ucitava projekciju za dati identifikator preko odgovarajuce sistemske operacije.
+     *
+     * @param projectionId identifikator projekcije
+     * @return ucitana projekcija
+     * @throws Exception ako se projekcija ne moze ucitati
+     */
     private Projection getProjectionById(Long projectionId) throws Exception {
         GetProjectionByIdSO getProjectionSO = new GetProjectionByIdSO();
         getProjectionSO.execute(projectionId);
         return getProjectionSO.getResult();
     }
 }
+

@@ -17,6 +17,12 @@ import rs.ac.bg.fon.ai.server.abstractso.AbstractSO;
  */
 public class SaveTicketsSO extends AbstractSO {
 
+    /**
+     * Proverava da li parametar ispunjava poslovne preduslove operacije.
+     *
+     * @param param podatak koji se obradjuje
+     * @throws Exception ako je parametar neispravan ili uslovi nisu ispunjeni
+     */
     @Override
     protected void precondition(Object param) throws Exception {
         if (!(param instanceof List)) {
@@ -44,6 +50,12 @@ public class SaveTicketsSO extends AbstractSO {
         }
     }
 
+    /**
+     * Izvrsava poslovnu logiku sistemske operacije nad validiranim parametrom.
+     *
+     * @param param validiran podatak koji se obradjuje
+     * @throws Exception ako operacija ne moze da se izvrsi
+     */
     @Override
     protected void executeOperation(Object param) throws Exception {
         List<Ticket> tickets = (List<Ticket>) param;

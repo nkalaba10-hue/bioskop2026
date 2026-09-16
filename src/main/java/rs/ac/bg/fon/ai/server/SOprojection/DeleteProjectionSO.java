@@ -18,6 +18,12 @@ import rs.ac.bg.fon.ai.server.abstractso.AbstractSO;
  */
 public class DeleteProjectionSO extends AbstractSO {
 
+    /**
+     * Proverava da li parametar ispunjava poslovne preduslove operacije.
+     *
+     * @param param podatak koji se obradjuje
+     * @throws Exception ako je parametar neispravan ili uslovi nisu ispunjeni
+     */
     @Override
     protected void precondition(Object param) throws Exception {
         if (!(param instanceof Projection)) {
@@ -48,6 +54,12 @@ public class DeleteProjectionSO extends AbstractSO {
         }
     }
 
+    /**
+     * Izvrsava poslovnu logiku sistemske operacije nad validiranim parametrom.
+     *
+     * @param param validiran podatak koji se obradjuje
+     * @throws Exception ako operacija ne moze da se izvrsi
+     */
     @Override
     protected void executeOperation(Object param) throws Exception {
         Projection projection = (Projection) param;
@@ -55,6 +67,13 @@ public class DeleteProjectionSO extends AbstractSO {
         System.out.println("  → Projection deleted: ID " + projection.getId());
     }
 
+    /**
+     * Ucitava postojecu projekciju iz baze prema identifikatoru.
+     *
+     * @param projectionId identifikator projekcije
+     * @return pronadjena projekcija ili {@code null} ako ne postoji
+     * @throws Exception ako projekcija ne moze da se ucita
+     */
     private Projection getExistingProjection(Long projectionId) throws Exception {
         Projection template = new Projection();
         String query = " WHERE p.id = " + projectionId;

@@ -18,61 +18,73 @@ import rs.ac.bg.fon.ai.server.abstractso.AbstractSO;
  */
 public class DeleteHallSO extends AbstractSO {
 
-   @Override
-   protected void precondition(Object param) throws Exception {
-       if (!(param instanceof Hall)) {
-           throw new Exception("Invalid parameter type - expected Hall");
-       }
-       
-       Hall hall = (Hall) param;
-       
-       // Provera ID-a
-       if (hall.getId() == null) {
-           throw new Exception("Hall ID is required for deletion");
-       }
-       
-       // Provera da li sala postoji
-       Hall template = new Hall();
-       List existingHalls = repository.getAll(template);
-       boolean hallExists = false;
-       
-       for (Object entity : existingHalls) {
-           if (entity instanceof Hall) {
-               Hall existing = (Hall) entity;
-               if (existing.getId().equals(hall.getId())) {
-                   hallExists = true;
-                   break;
-               }
-           }
-       }
-       
-       if (!hallExists) {
-           throw new Exception("Hall with ID " + hall.getId() + " not found in database");
-       }
-       
-       // Provera da li ima budućih projekcija za salu
-       Projection projectionTemplate = new Projection();
-       String query = " WHERE hall_id = " + hall.getId() + " AND date >= CURDATE() AND status != 'PAST'";
-       List upcomingProjections = repository.getByQuery(projectionTemplate, query);
-       
-       if (!upcomingProjections.isEmpty()) {
-           throw new Exception("Cannot delete hall - there are upcoming projections scheduled");
-       }
-       
-       // Provera da li ima bilo kakvih projekcija u prošlosti (opciono)
-       String allProjectionsQuery = " WHERE hall_id = " + hall.getId();
-       List allProjections = repository.getByQuery(projectionTemplate, allProjectionsQuery);
-       
-       if (!allProjections.isEmpty()) {
-           System.out.println("  → Warning: Hall has " + allProjections.size() + " historical projections");
-           // Možete dodati dodatnu logiku ako želite
-       }
-   }
+    /**
+     * Proverava da li parametar ispunjava poslovne preduslove operacije.
+     *
+     * @param param podatak koji se obradjuje
+     * @throws Exception ako je parametar neispravan ili uslovi nisu ispunjeni
+     */
+    @Override
+    protected void precondition(Object param) throws Exception {
+        if (!(param instanceof Hall)) {
+            throw new Exception("Invalid parameter type - expected Hall");
+        }
+        
+        Hall hall = (Hall) param;
+        
+        // Provera ID-a
+        if (hall.getId() == null) {
+            throw new Exception("Hall ID is required for deletion");
+        }
+        
+        // Provera da li sala postoji
+        Hall template = new Hall();
+        List existingHalls = repository.getAll(template);
+        boolean hallExists = false;
+        
+        for (Object entity : existingHalls) {
+            if (entity instanceof Hall) {
+                Hall existing = (Hall) entity;
+                if (existing.getId().equals(hall.getId())) {
+                    hallExists = true;
+                    break;
+                }
+            }
+        }
+        
+        if (!hallExists) {
+            throw new Exception("Hall with ID " + hall.getId() + " not found in database");
+        }
+        
+        // Provera da li ima budućih projekcija za salu
+        Projection projectionTemplate = new Projection();
+        String query = " WHERE hall_id = " + hall.getId() + " AND date >= CURDATE() AND status != 'PAST'";
+        List upcomingProjections = repository.getByQuery(projectionTemplate, query);
+        
+        if (!upcomingProjections.isEmpty()) {
+            throw new Exception("Cannot delete hall - there are upcoming projections scheduled");
+        }
+        
+        // Provera da li ima bilo kakvih projekcija u prošlosti (opciono)
+        String allProjectionsQuery = " WHERE hall_id = " + hall.getId();
+        List allProjections = repository.getByQuery(projectionTemplate, allProjectionsQuery);
+        
+        if (!allProjections.isEmpty()) {
+            System.out.println("  → Warning: Hall has " + allProjections.size() + " historical projections");
+            // Možete dodati dodatnu logiku ako želite
+        }
+    }
 
-   @Override
-   protected void executeOperation(Object param) throws Exception {
-       Hall hall = (Hall) param;
-       repository.delete(hall);
-       System.out.println("  → Hall deleted: " + hall.getName() + " (ID: " + hall.getId() + ")");
-   }
+    /**
+     * Izvrsava poslovnu logiku sistemske operacije nad validiranim parametrom.
+     *
+     * @param param validiran podatak koji se obradjuje
+     * @throws Exception ako operacija ne moze da se izvrsi
+     */
+    @Override
+    protected void executeOperation(Object param) throws Exception {
+        Hall hall = (Hall) param;
+        repository.delete(hall);
+        System.out.println("  → Hall deleted: " + hall.getName() + " (ID: " + hall.getId() + ")");
+    }
 }

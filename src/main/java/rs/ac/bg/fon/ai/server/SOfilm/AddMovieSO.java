@@ -19,6 +19,12 @@ import rs.ac.bg.fon.ai.server.repository.DbConnectionFactory;
  */
 public class AddMovieSO extends AbstractSO {
 
+    /**
+     * Proverava da li parametar ispunjava poslovne preduslove operacije.
+     *
+     * @param param podatak koji se obradjuje
+     * @throws Exception ako je parametar neispravan ili uslovi nisu ispunjeni
+     */
     @Override
     protected void precondition(Object param) throws Exception {
         if (!(param instanceof Film)) {
@@ -71,6 +77,12 @@ public class AddMovieSO extends AbstractSO {
         }
     }
 
+    /**
+     * Izvrsava poslovnu logiku sistemske operacije nad validiranim parametrom.
+     *
+     * @param param validiran podatak koji se obradjuje
+     * @throws Exception ako operacija ne moze da se izvrsi
+     */
     @Override
     protected void executeOperation(Object param) throws Exception {
         Film film = (Film) param;
@@ -84,6 +96,12 @@ public class AddMovieSO extends AbstractSO {
         System.out.println("  → Film saved with ID: " + film.getId() + " and " + film.getGenres().size() + " genres");
     }
 
+    /**
+     * Cuva veze izmedju filma i svih njegovih zanrova u tabeli {@code film_genre}.
+     *
+     * @param film film cije veze sa zanrovima treba sacuvati
+     * @throws Exception ako se veze ne mogu sacuvati u bazi
+     */
     private void saveFilmGenres(Film film) throws Exception {
         String sql = "INSERT INTO film_genre (film_id, genre_id) VALUES (?, ?)";
         

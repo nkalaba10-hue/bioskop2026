@@ -27,11 +27,23 @@ public class GetAllFilmsSO extends AbstractSO {
         return result;
     }
 
+    /**
+     * Proverava da li parametar ispunjava poslovne preduslove operacije.
+     *
+     * @param param podatak koji se obradjuje
+     * @throws Exception ako je parametar neispravan ili uslovi nisu ispunjeni
+     */
     @Override
     protected void precondition(Object param) throws Exception {
         // Nema specifičnih preduslova
     }
 
+    /**
+     * Izvrsava poslovnu logiku sistemske operacije nad validiranim parametrom.
+     *
+     * @param param validiran podatak koji se obradjuje
+     * @throws Exception ako operacija ne moze da se izvrsi
+     */
     @Override
     protected void executeOperation(Object param) throws Exception {
         Film template = new Film();
@@ -53,6 +65,13 @@ public class GetAllFilmsSO extends AbstractSO {
         System.out.println("  → Retrieved " + result.size() + " films");
     }
 
+    /**
+     * Ucitava sve zanrove koji pripadaju jednom filmu.
+     *
+     * @param filmId identifikator filma
+     * @return lista zanrova filma
+     * @throws Exception ako se zanrovi ne mogu ucitati
+     */
     private List<Genre> getGenresForFilm(Long filmId) throws Exception {
         GetGenresByFilmIdSO getGenresSO = new GetGenresByFilmIdSO();
         getGenresSO.execute(filmId);
