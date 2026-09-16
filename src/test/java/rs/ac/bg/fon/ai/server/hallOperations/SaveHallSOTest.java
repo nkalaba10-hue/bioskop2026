@@ -13,11 +13,50 @@ import rs.ac.bg.fon.ai.communication.model.Hall;
 
 class SaveHallSOTest {
     private SaveHallSO so;
-    @BeforeEach void setUp() { so = new SaveHallSO(); }
-    @AfterEach void tearDown() { so = null; }
-    @Test void testSaveHallSO() { assertNotNull(so); }
-    @Test void testPreconditionPogresanTip() { assertEquals("Invalid parameter type - expected Hall", assertThrows(Exception.class, () -> so.precondition("hall")).getMessage()); }
-    @Test void testPreconditionNeispravanNaziv() { assertEquals("Hall name is required", assertThrows(Exception.class, () -> so.precondition(new Hall(null, 10))).getMessage()); assertEquals("Hall name must be at least 2 characters long", assertThrows(Exception.class, () -> so.precondition(new Hall("A", 10))).getMessage()); }
-    @Test void testPreconditionNeispravanKapacitet() { assertEquals("Hall capacity must be positive", assertThrows(Exception.class, () -> so.precondition(new Hall("Sala", 0))).getMessage()); assertEquals("Hall capacity cannot exceed 1000 seats", assertThrows(Exception.class, () -> so.precondition(new Hall("Sala", 1001))).getMessage()); }
-    @Test void testGetResultPreIzvrsavanja() { assertNull(so.getResult()); }
+    @BeforeEach
+    void setUp() {
+        so = new SaveHallSO();
+    }
+    @AfterEach
+    void tearDown() {
+        so = null;
+    }
+    @Test
+    void testSaveHallSO() {
+        assertNotNull(so);
+    }
+    @Test
+    void testPreconditionPogresanTip() {
+        assertEquals("Invalid parameter type - expected Hall", assertThrows(Exception.class, () -> so.precondition("hall")).getMessage());
+    }
+    @Test
+    void testPreconditionNeispravanNaziv() {
+        assertEquals("Hall name is required", assertThrows(Exception.class, () -> so.precondition(new Hall(null, 10))).getMessage());
+        assertEquals("Hall name must be at least 2 characters long", assertThrows(Exception.class, () -> so.precondition(new Hall("A", 10))).getMessage());
+    }
+    @Test
+    void testPreconditionNeispravanKapacitet() {
+        assertEquals("Hall capacity must be positive", assertThrows(Exception.class, () -> so.precondition(new Hall("Sala", 0))).getMessage());
+        assertEquals("Hall capacity cannot exceed 1000 seats", assertThrows(Exception.class, () -> so.precondition(new Hall("Sala", 1001))).getMessage());
+    }
+    @Test
+    void testGetResultPreIzvrsavanja() {
+        assertNull(so.getResult());
+    }
+
+    @Test
+    void testExecuteCuvaSaluUBazu() throws Exception {
+        Hall hall = new Hall("TS" + System.nanoTime(), 20);
+
+        try {
+            so.execute(hall);
+        assertNotNull(so.getResult());
+        assertNotNull(hall.getId());
+        assertEquals(hall, so.getResult());
+    } finally {
+            if (hall.getId() != null) {
+                new DeleteHallSO().execute(hall);
+    }
+        }
+    }
 }

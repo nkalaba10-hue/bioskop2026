@@ -20,7 +20,6 @@ class AbstractSOTest {
         TestSO so = new TestSO(false, false);
 
         so.execute(new Object());
-
         assertTrue(so.preconditionCalled);
         assertTrue(so.operationCalled);
         assertTrue(so.repository.connected);
@@ -33,7 +32,6 @@ class AbstractSOTest {
         TestSO so = new TestSO(true, false);
 
         Exception e = assertThrows(Exception.class, () -> so.execute(new Object()));
-
         assertEquals("Neispravan parametar", e.getMessage());
         assertTrue(so.preconditionCalled);
         assertFalse(so.operationCalled);
@@ -45,7 +43,6 @@ class AbstractSOTest {
         TestSO so = new TestSO(false, true);
 
         Exception e = assertThrows(Exception.class, () -> so.execute(new Object()));
-
         assertEquals("Greska pri izvrsavanju", e.getMessage());
         assertTrue(so.operationCalled);
         assertTrue(so.repository.rolledBack);
@@ -63,32 +60,39 @@ class AbstractSOTest {
             this.failPrecondition = failPrecondition;
             this.failOperation = failOperation;
             super.repository = repository;
-        }
+    }
 
         @Override protected void precondition(Object param) throws Exception {
             preconditionCalled = true;
             if (failPrecondition) throw new Exception("Neispravan parametar");
-        }
+    }
 
         @Override protected void executeOperation(Object param) throws Exception {
             operationCalled = true;
             if (failOperation) throw new Exception("Greska pri izvrsavanju");
-        }
+    }
     }
 
     private static class TestRepository implements DbRepository<GenericEntity> {
         private boolean connected;
         private boolean committed;
         private boolean rolledBack;
-        @Override public void connect() { connected = true; }
-        @Override public void commit() { committed = true; }
-        @Override public void rollback() { rolledBack = true; }
-        @Override public List<GenericEntity> getAll(GenericEntity entity) { return List.of(); }
+        @Override public void connect() { connected = true;
+    }
+        @Override public void commit() { committed = true;
+    }
+        @Override public void rollback() { rolledBack = true;
+    }
+        @Override public List<GenericEntity> getAll(GenericEntity entity) { return List.of();
+    }
         @Override public void add(GenericEntity entity) { }
         @Override public void edit(GenericEntity entity) { }
         @Override public void delete(GenericEntity entity) { }
-        @Override public List<GenericEntity> getByQuery(GenericEntity entity, String query) { return List.of(); }
-        @Override public GenericEntity addWithReturn(GenericEntity entity) { return entity; }
-        @Override public GenericEntity getById(GenericEntity entity, Long id) { return new Hall(); }
+        @Override public List<GenericEntity> getByQuery(GenericEntity entity, String query) { return List.of();
+    }
+        @Override public GenericEntity addWithReturn(GenericEntity entity) { return entity;
+    }
+        @Override public GenericEntity getById(GenericEntity entity, Long id) { return new Hall();
+    }
     }
 }

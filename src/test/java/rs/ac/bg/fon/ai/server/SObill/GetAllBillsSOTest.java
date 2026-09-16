@@ -5,9 +5,30 @@ import org.junit.jupiter.api.*;
 
 class GetAllBillsSOTest {
     private GetAllBillsSO so;
-    @BeforeEach void setUp() { so = new GetAllBillsSO(); }
-    @AfterEach void tearDown() { so = null; }
-    @Test void testGetAllBillsSO() { assertNotNull(so); }
-    @Test void testPrecondition() { assertDoesNotThrow(() -> so.precondition(null)); }
-    @Test void testGetResultPreIzvrsavanja() { assertNull(so.getResult()); }
+    @BeforeEach
+    void setUp() {
+        so = new GetAllBillsSO();
+    }
+    @AfterEach
+    void tearDown() {
+        so = null;
+    }
+    @Test
+    void testGetAllBillsSO() {
+        assertNotNull(so);
+    }
+    @Test
+    void testPrecondition() {
+        assertDoesNotThrow(() -> so.precondition(null));
+    }
+    @Test
+    void testGetResultPreIzvrsavanja() {
+        assertNull(so.getResult());
+    }
+
+    @Test
+    void testExecuteUcitavaRacuneIzBaze() {
+        assertDoesNotThrow(() -> so.execute(null));
+        assertNotNull(so.getResult());
+    }
 }
