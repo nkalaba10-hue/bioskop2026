@@ -39,9 +39,9 @@ public class Film implements GenericEntity {
      * @param genres lista zanrova filma
      */
     public Film(String title, int duration, String description, LocalDate releaseDate, List<Genre> genres) {
-        this.title = title;
-        this.duration = duration;
-        this.description = description;
+        setTitle(title);
+        setDuration(duration);
+        setDescription(description);
         this.releaseDate = releaseDate;
         this.genres = genres;
     }
@@ -64,8 +64,20 @@ public class Film implements GenericEntity {
         return title;
     }
 
-    /** @param title novi naziv filma. */
+    /**
+     * Postavlja naziv filma.
+     *
+     * @param title novi naziv, duzine od 1 do 100 znakova
+     * @throws NullPointerException ako je naziv {@code null}
+     * @throws IllegalArgumentException ako je naziv prazan ili predugacak
+     */
     public void setTitle(String title) {
+        if (title == null) {
+            throw new NullPointerException("Film title is required");
+        }
+        if (title.trim().isEmpty() || title.length() > 100) {
+            throw new IllegalArgumentException("Film title must contain from 1 to 100 characters");
+        }
         this.title = title;
     }
 
@@ -74,8 +86,16 @@ public class Film implements GenericEntity {
         return duration;
     }
 
-    /** @param duration novo trajanje filma u minutima. */
+    /**
+     * Postavlja trajanje filma.
+     *
+     * @param duration trajanje od 1 do 500 minuta
+     * @throws IllegalArgumentException ako trajanje nije u dozvoljenom opsegu
+     */
     public void setDuration(int duration) {
+        if (duration <= 0 || duration > 500) {
+            throw new IllegalArgumentException("Film duration must be between 1 and 500 minutes");
+        }
         this.duration = duration;
     }
 
@@ -84,8 +104,16 @@ public class Film implements GenericEntity {
         return description;
     }
 
-    /** @param description novi opis filma. */
+    /**
+     * Postavlja opis filma.
+     *
+     * @param description novi opis ili {@code null} ako opis nije poznat
+     * @throws IllegalArgumentException ako opis ima vise od 255 znakova
+     */
     public void setDescription(String description) {
+        if (description != null && description.length() > 255) {
+            throw new IllegalArgumentException("Film description cannot exceed 255 characters");
+        }
         this.description = description;
     }
 
@@ -109,11 +137,17 @@ public class Film implements GenericEntity {
         this.genres = genres;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "film";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAttributeList() {
         StringBuilder sb = new StringBuilder();
@@ -121,6 +155,9 @@ public class Film implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAttributeValues() {
         StringBuilder sb = new StringBuilder();
@@ -131,6 +168,9 @@ public class Film implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String setAttributeValues() {
         StringBuilder sb = new StringBuilder();
@@ -141,6 +181,9 @@ public class Film implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getWhereCondition() {
         StringBuilder sb = new StringBuilder();
@@ -148,6 +191,9 @@ public class Film implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getSelectAllQuery() {
         StringBuilder sb = new StringBuilder();
@@ -157,6 +203,9 @@ public class Film implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericEntity mapResultSetToObject(ResultSet rs) throws Exception {
         Film film = new Film();
@@ -176,6 +225,9 @@ public class Film implements GenericEntity {
         return film;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getOrderByClause() {
         return " ORDER BY title";

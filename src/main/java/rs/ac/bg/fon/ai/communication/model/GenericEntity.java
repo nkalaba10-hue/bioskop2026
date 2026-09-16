@@ -18,71 +18,59 @@ import java.sql.ResultSet;
  */
 public interface GenericEntity extends Serializable {
 
-    /**
-     * Vraća naziv tabele u bazi podataka
-     */
+    /** Vraca naziv tabele kojoj entitet pripada.
+     * @return naziv tabele u bazi podataka */
     String getTableName();
 
-    /**
-     * Vraća listu kolona za INSERT upit (bez id)
-     */
+    /** Vraca listu kolona za INSERT operaciju, bez primarnog kljuca.
+     * @return SQL lista naziva kolona */
     String getAttributeList();
 
-    /**
-     * Vraća vrednosti za INSERT upit
-     */
+    /** Vraca SQL prikaz trenutnih vrednosti atributa za INSERT upit.
+     * @return SQL lista vrednosti atributa */
     String getAttributeValues();
 
-    /**
-     * Vraća SET deo za UPDATE upit
-     */
+    /** Vraca SET deo SQL UPDATE upita za trenutne vrednosti entiteta.
+     * @return izraz za postavljanje atributa */
     String setAttributeValues();
 
-    /**
-     * Vraća WHERE uslov za UPDATE i DELETE upite
-     */
+    /** Vraca uslov koji odredjuje red za izmenu ili brisanje.
+     * @return SQL uslov bez kljucne reci WHERE */
     String getWhereCondition();
 
-    /**
-     * Vraća kompletan SELECT upit za getAll operaciju
-     */
+    /** Vraca osnovni SELECT upit za ucitavanje entiteta.
+     * @return SELECT upit bez dodatnih kriterijuma */
     String getSelectAllQuery();
 
-    /**
-     * Mapira ResultSet red u objekat
-     */
+    /** Mapira trenutni red rezultata upita u domenski objekat.
+     * @param rs rezultat upita pozicioniran na red koji se mapira
+     * @return novi domenski objekat popunjen podacima iz rezultata
+     * @throws Exception ako podaci ne mogu da se procitaju ili mapiraju */
     GenericEntity mapResultSetToObject(ResultSet rs) throws Exception;
 
-    /**
-     * Vraća ID entiteta
-     */
+    /** Vraca identifikator entiteta.
+     * @return identifikator ili {@code null} ako objekat jos nije sacuvan */
     Long getId();
 
-    /**
-     * Postavlja ID entiteta
-     */
+    /** Postavlja identifikator entiteta.
+     * @param id novi identifikator */
     void setId(Long id);
 
-    /**
-     * Vraća JOIN klauzule ako su potrebne za kompleksnije upite DEFAULT: prazan
-     * string - može se override-ovati po potrebi
-     */
+    /** Vraca dodatne JOIN klauzule kada su potrebne.
+     * @return prazan string u podrazumevanoj implementaciji */
     default String getJoinClause() {
         return "";
     }
 
-    /**
-     * Vraća ORDER BY klauzulu DEFAULT: order by id - može se override-ovati po
-     * potrebi
-     */
+    /** Vraca podrazumevanu ORDER BY klauzulu.
+     * @return sortiranje po identifikatoru */
     default String getOrderByClause() {
         return " ORDER BY id";
     }
 
-    /**
-     * Pomoćna metoda za bezbedno dodavanje String vrednosti u SQL DEFAULT
-     * implementacija - može se koristiti u konkretnim klasama
-     */
+    /** Pretvara tekst u SQL vrednost i bezbedno obradjuje navodnike.
+     * @param value tekstualna vrednost ili {@code null}
+     * @return SQL literal, odnosno {@code NULL} za null vrednost */
     default String quote(String value) {
         if (value == null) {
             return "NULL";
@@ -90,10 +78,9 @@ public interface GenericEntity extends Serializable {
         return "'" + value.replace("'", "''") + "'";
     }
 
-    /**
-     * Pomoćna metoda za bezbedno dodavanje vrednosti u SQL DEFAULT
-     * implementacija - može se koristiti u konkretnim klasama
-     */
+    /** Pretvara podrzanu Java vrednost u SQL literal.
+     * @param value vrednost koja se zapisuje u SQL upit
+     * @return SQL literal odgovarajuce vrednosti */
     default String sqlValue(Object value) {
         if (value == null) {
             return "NULL";
@@ -101,14 +88,11 @@ public interface GenericEntity extends Serializable {
         if (value instanceof String) {
             return quote((String) value);
         }
-        if ((value instanceof java.time.LocalDate) || (value instanceof java.time.LocalTime) || (value instanceof java.time.LocalDateTime)
-				|| (value instanceof java.sql.Date)) {
+        if ((value instanceof java.time.LocalDate) || (value instanceof java.time.LocalTime)
+                || (value instanceof java.time.LocalDateTime) || (value instanceof java.sql.Date)) {
             return quote(value.toString());
         }
-        if (value instanceof java.sql.Time) {
-            return quote(value.toString());
-        }
-        if (value instanceof java.sql.Timestamp) {
+        if (value instanceof java.sql.Time || value instanceof java.sql.Timestamp) {
             return quote(value.toString());
         }
         if (value instanceof Boolean) {

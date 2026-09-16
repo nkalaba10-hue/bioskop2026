@@ -67,8 +67,16 @@ public class Bill implements GenericEntity {
         return dateTime;
     }
 
-    /** @param dateTime novi datum i vreme izdavanja racuna. */
+    /**
+     * Postavlja datum i vreme izdavanja racuna.
+     *
+     * @param dateTime novi datum i vreme izdavanja racuna
+     * @throws NullPointerException ako je datum i vreme {@code null}
+     */
     public void setDateTime(LocalDateTime dateTime) {
+        if (dateTime == null) {
+            throw new NullPointerException("Bill date and time is required");
+        }
         this.dateTime = dateTime;
     }
 
@@ -87,8 +95,20 @@ public class Bill implements GenericEntity {
         return totalAmount;
     }
 
-    /** @param totalAmount novi ukupan iznos racuna. */
+    /**
+     * Postavlja ukupan iznos racuna.
+     *
+     * @param totalAmount novi pozitivan ukupan iznos
+     * @throws NullPointerException ako je iznos {@code null}
+     * @throws IllegalArgumentException ako iznos nije veci od nule
+     */
     public void setTotalAmount(BigDecimal totalAmount) {
+        if (totalAmount == null) {
+            throw new NullPointerException("Bill total amount is required");
+        }
+        if (totalAmount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Bill total amount must be positive");
+        }
         this.totalAmount = totalAmount;
     }
 
@@ -102,11 +122,17 @@ public class Bill implements GenericEntity {
         this.savedBy = savedBy;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "bill";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAttributeList() {
         StringBuilder sb = new StringBuilder();
@@ -114,6 +140,9 @@ public class Bill implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAttributeValues() {
         StringBuilder sb = new StringBuilder();
@@ -123,6 +152,9 @@ public class Bill implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String setAttributeValues() {
         StringBuilder sb = new StringBuilder();
@@ -132,6 +164,9 @@ public class Bill implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getWhereCondition() {
         StringBuilder sb = new StringBuilder();
@@ -139,6 +174,9 @@ public class Bill implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getSelectAllQuery() {
         StringBuilder sb = new StringBuilder();
@@ -150,6 +188,9 @@ public class Bill implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericEntity mapResultSetToObject(ResultSet rs) throws Exception {
         Bill bill = new Bill();
@@ -176,6 +217,9 @@ public class Bill implements GenericEntity {
         return bill;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getOrderByClause() {
         return " ORDER BY b.date_time DESC";

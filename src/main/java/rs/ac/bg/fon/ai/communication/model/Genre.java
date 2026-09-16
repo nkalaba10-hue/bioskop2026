@@ -24,7 +24,7 @@ public class Genre implements GenericEntity {
      * @param name naziv zanra
      */
     public Genre(String name) {
-        this.name = name;
+        setName(name);
     }
 
     /** Kreira prazan objekat zanra. */
@@ -49,41 +49,74 @@ public class Genre implements GenericEntity {
         return name;
     }
 
-    /** @param name novi naziv zanra. */
+    /**
+     * Postavlja naziv zanra.
+     *
+     * @param name novi naziv zanra
+     * @throws NullPointerException ako je naziv {@code null}
+     * @throws IllegalArgumentException ako je naziv prazan ili sadrzi samo razmake
+     */
     public void setName(String name) {
+        if (name == null) {
+            throw new NullPointerException("Genre name is required");
+        }
+        if (name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Genre name cannot be empty");
+        }
         this.name = name;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "genre";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAttributeList() {
         return "name";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAttributeValues() {
         return quote(name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String setAttributeValues() {
         return "name = " + quote(name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getWhereCondition() {
         return "id = " + id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getSelectAllQuery() {
-        return "SELECT * FROM genre ORDER BY name";
+        return "SELECT * FROM genre";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericEntity mapResultSetToObject(ResultSet rs) throws Exception {
         Genre genre = new Genre();

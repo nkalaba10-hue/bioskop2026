@@ -15,46 +15,73 @@ import java.sql.ResultSet;
 public enum ProjectionStatus implements GenericEntity{
     ACTIVE,PAST,SOLD_OUT;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAttributeList() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAttributeValues() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String setAttributeValues() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getWhereCondition() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getSelectAllQuery() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericEntity mapResultSetToObject(ResultSet rs) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Long getId() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setId(Long id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

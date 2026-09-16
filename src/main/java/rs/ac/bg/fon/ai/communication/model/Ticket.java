@@ -29,8 +29,15 @@ public class Ticket implements GenericEntity {
         return action;
     }
 
-    /** @param action nova akcija nad tiketom. */
+    /**
+     * Postavlja akciju koja treba da se izvrsi nad tiketom.
+     * @param action nova akcija
+     * @throws NullPointerException ako je akcija {@code null}
+     */
     public void setAction(Action action) {
+        if (action == null) {
+            throw new NullPointerException("Ticket action is required");
+        }
         this.action = action;
     }
 
@@ -74,8 +81,15 @@ public class Ticket implements GenericEntity {
         return projection;
     }
 
-    /** @param projection projekcija za koju tiket vazi. */
+    /**
+     * Postavlja projekciju za koju tiket vazi.
+     * @param projection projekcija tiketa
+     * @throws NullPointerException ako je projekcija {@code null}
+     */
     public void setProjection(Projection projection) {
+        if (projection == null) {
+            throw new NullPointerException("Ticket projection is required");
+        }
         this.projection = projection;
     }
 
@@ -84,8 +98,19 @@ public class Ticket implements GenericEntity {
         return price;
     }
 
-    /** @param price nova cena tiketa. */
+    /**
+     * Postavlja cenu tiketa.
+     * @param price nova pozitivna cena tiketa
+     * @throws NullPointerException ako je cena {@code null}
+     * @throws IllegalArgumentException ako cena nije veca od nule
+     */
     public void setPrice(BigDecimal price) {
+        if (price == null) {
+            throw new NullPointerException("Ticket price is required");
+        }
+        if (price.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Ticket price must be positive");
+        }
         this.price = price;
     }
 
@@ -94,16 +119,29 @@ public class Ticket implements GenericEntity {
         return bill;
     }
 
-    /** @param bill racun kome tiket pripada. */
+    /**
+     * Postavlja racun kome tiket pripada.
+     * @param bill racun tiketa
+     * @throws NullPointerException ako je racun {@code null}
+     */
     public void setBill(Bill bill) {
+        if (bill == null) {
+            throw new NullPointerException("Ticket bill is required");
+        }
         this.bill = bill;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "ticket";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAttributeList() {
         StringBuilder sb = new StringBuilder();
@@ -111,6 +149,9 @@ public class Ticket implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAttributeValues() {
         StringBuilder sb = new StringBuilder();
@@ -120,6 +161,9 @@ public class Ticket implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String setAttributeValues() {
         StringBuilder sb = new StringBuilder();
@@ -129,6 +173,9 @@ public class Ticket implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getWhereCondition() {
         StringBuilder sb = new StringBuilder();
@@ -136,6 +183,9 @@ public class Ticket implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getSelectAllQuery() {
         StringBuilder sb = new StringBuilder();
@@ -154,6 +204,9 @@ public class Ticket implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericEntity mapResultSetToObject(ResultSet rs) throws Exception {
         Ticket ticket = new Ticket();
@@ -203,6 +256,9 @@ public class Ticket implements GenericEntity {
         return ticket;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getOrderByClause() {
         return " ORDER BY t.id";

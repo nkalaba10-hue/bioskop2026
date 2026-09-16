@@ -65,8 +65,20 @@ public class Hall implements GenericEntity {
         return name;
     }
 
-    /** @param name novi naziv sale. */
+    /**
+     * Postavlja naziv sale.
+     *
+     * @param name novi naziv sale, duzine od 2 do 20 znakova
+     * @throws NullPointerException ako je naziv {@code null}
+     * @throws IllegalArgumentException ako je naziv prazan, prekratak ili predugacak
+     */
     public void setName(String name) {
+        if (name == null) {
+            throw new NullPointerException("Hall name is required");
+        }
+        if (name.trim().length() < 2 || name.length() > 20) {
+            throw new IllegalArgumentException("Hall name must contain from 2 to 20 characters");
+        }
         this.name = name;
     }
 
@@ -75,16 +87,30 @@ public class Hall implements GenericEntity {
         return capacity;
     }
 
-    /** @param capacity novi kapacitet sale. */
+    /**
+     * Postavlja kapacitet sale.
+     *
+     * @param capacity novi kapacitet, od 1 do 1000 mesta
+     * @throws IllegalArgumentException ako kapacitet nije u dozvoljenom opsegu
+     */
     public void setCapacity(int capacity) {
+        if (capacity <= 0 || capacity > 1000) {
+            throw new IllegalArgumentException("Hall capacity must be between 1 and 1000");
+        }
         this.capacity = capacity;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "hall";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAttributeList() {
         StringBuilder sb = new StringBuilder();
@@ -92,6 +118,9 @@ public class Hall implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAttributeValues() {
         StringBuilder sb = new StringBuilder();
@@ -101,6 +130,9 @@ public class Hall implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String setAttributeValues() {
         StringBuilder sb = new StringBuilder();
@@ -109,6 +141,9 @@ public class Hall implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getWhereCondition() {
         StringBuilder sb = new StringBuilder();
@@ -116,15 +151,20 @@ public class Hall implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getSelectAllQuery() {
         StringBuilder sb = new StringBuilder();
         sb.append("SELECT * FROM ")
-                .append(getTableName())
-                .append(getOrderByClause());
+                .append(getTableName());
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericEntity mapResultSetToObject(ResultSet rs) throws Exception {
         Hall hall = new Hall();
@@ -136,6 +176,9 @@ public class Hall implements GenericEntity {
 
 
     // Override-ovana getOrderByClause za specifično sortiranje
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getOrderByClause() {
         return " ORDER BY name";

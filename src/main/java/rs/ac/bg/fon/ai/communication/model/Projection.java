@@ -71,8 +71,15 @@ public class Projection implements GenericEntity {
         return film;
     }
 
-    /** @param film film koji se prikazuje. */
+    /**
+     * Postavlja film koji se prikazuje.
+     * @param film film koji se prikazuje
+     * @throws NullPointerException ako je film {@code null}
+     */
     public void setFilm(Film film) {
+        if (film == null) {
+            throw new NullPointerException("Projection film is required");
+        }
         this.film = film;
     }
 
@@ -81,8 +88,15 @@ public class Projection implements GenericEntity {
         return hall;
     }
 
-    /** @param hall sala u kojoj se projekcija odrzava. */
+    /**
+     * Postavlja salu u kojoj se projekcija odrzava.
+     * @param hall sala projekcije
+     * @throws NullPointerException ako je sala {@code null}
+     */
     public void setHall(Hall hall) {
+        if (hall == null) {
+            throw new NullPointerException("Projection hall is required");
+        }
         this.hall = hall;
     }
 
@@ -91,8 +105,15 @@ public class Projection implements GenericEntity {
         return date;
     }
 
-    /** @param date novi datum projekcije. */
+    /**
+     * Postavlja datum projekcije.
+     * @param date novi datum projekcije
+     * @throws NullPointerException ako je datum {@code null}
+     */
     public void setDate(LocalDate date) {
+        if (date == null) {
+            throw new NullPointerException("Projection date is required");
+        }
         this.date = date;
     }
 
@@ -101,8 +122,15 @@ public class Projection implements GenericEntity {
         return time;
     }
 
-    /** @param time novo vreme pocetka projekcije. */
+    /**
+     * Postavlja vreme pocetka projekcije.
+     * @param time novo vreme pocetka
+     * @throws NullPointerException ako je vreme {@code null}
+     */
     public void setTime(LocalTime time) {
+        if (time == null) {
+            throw new NullPointerException("Projection time is required");
+        }
         this.time = time;
     }
 
@@ -111,8 +139,15 @@ public class Projection implements GenericEntity {
         return status;
     }
 
-    /** @param status novi status projekcije. */
+    /**
+     * Postavlja status projekcije.
+     * @param status novi status projekcije
+     * @throws NullPointerException ako je status {@code null}
+     */
     public void setStatus(ProjectionStatus status) {
+        if (status == null) {
+            throw new NullPointerException("Projection status is required");
+        }
         this.status = status;
     }
 
@@ -121,8 +156,19 @@ public class Projection implements GenericEntity {
         return price;
     }
 
-    /** @param price nova cena jedne karte. */
+    /**
+     * Postavlja cenu jedne karte.
+     * @param price nova pozitivna cena
+     * @throws NullPointerException ako je cena {@code null}
+     * @throws IllegalArgumentException ako cena nije veca od nule
+     */
     public void setPrice(BigDecimal price) {
+        if (price == null) {
+            throw new NullPointerException("Projection price is required");
+        }
+        if (price.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Projection price must be positive");
+        }
         this.price = price;
     }
 
@@ -131,16 +177,29 @@ public class Projection implements GenericEntity {
         return soldTickets;
     }
 
-    /** @param soldTickets novi broj prodatih karata. */
+    /**
+     * Postavlja broj prodatih karata.
+     * @param soldTickets novi broj prodatih karata
+     * @throws IllegalArgumentException ako je broj negativan
+     */
     public void setSoldTickets(int soldTickets) {
+        if (soldTickets < 0) {
+            throw new IllegalArgumentException("Sold tickets cannot be negative");
+        }
         this.soldTickets = soldTickets;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getTableName() {
         return "projection";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAttributeList() {
         StringBuilder sb = new StringBuilder();
@@ -148,6 +207,9 @@ public class Projection implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getAttributeValues() {
         StringBuilder sb = new StringBuilder();
@@ -161,6 +223,9 @@ public class Projection implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String setAttributeValues() {
         StringBuilder sb = new StringBuilder();
@@ -174,6 +239,9 @@ public class Projection implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getWhereCondition() {
         StringBuilder sb = new StringBuilder();
@@ -181,6 +249,9 @@ public class Projection implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getSelectAllQuery() {
         StringBuilder sb = new StringBuilder();
@@ -195,6 +266,9 @@ public class Projection implements GenericEntity {
         return sb.toString();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericEntity mapResultSetToObject(ResultSet rs) throws Exception {
         Projection projection = new Projection();
@@ -228,12 +302,18 @@ public class Projection implements GenericEntity {
         return projection;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getJoinClause() {
         // Već je uključeno u getSelectAllQuery, ali možemo override-ovati ako treba
         return "";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getOrderByClause() {
         return " ORDER BY p.date, p.time";
