@@ -6,12 +6,14 @@ package rs.ac.bg.fon.ai.client.ui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -22,195 +24,229 @@ import javax.swing.event.ListSelectionListener;
 
 import rs.ac.bg.fon.ai.client.components.TableModelHall;
 import rs.ac.bg.fon.ai.client.forms.HallDialog;
+import rs.ac.bg.fon.ai.client.json.HallJsonExportService;
 import rs.ac.bg.fon.ai.client.logic.Controller;
 import rs.ac.bg.fon.ai.communication.model.Hall;
 
 /**
- *
- * @author nkala
- */
+*
+* @author nkala
+*/
 public class HallPanel extends JPanel {
 
-    private JTable table;
-    private TableModelHall model;
-    private JButton btnEdit;
-    private JButton btnDelete;
+   private JTable table;
+   private TableModelHall model;
+   private JButton btnEdit;
+   private JButton btnDelete;
 
-    public HallPanel() {
-        initComponents();
-        //loadHalls();
-        setupTableSelectionListener();
-    }
+   public HallPanel() {
+       initComponents();
+       //loadHalls();
+       setupTableSelectionListener();
+   }
 
-    private void initComponents() {
-        setLayout(new BorderLayout());
-        setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
+   private void initComponents() {
+       setLayout(new BorderLayout());
+       setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        table = new JTable();
-        JScrollPane scrollPane = createHallTable(table);
-        add(scrollPane, BorderLayout.CENTER);
-        add(createHallBottomPanel(), BorderLayout.SOUTH);
-    }
+       table = new JTable();
+       JScrollPane scrollPane = createHallTable(table);
+       add(scrollPane, BorderLayout.CENTER);
+       add(createHallBottomPanel(), BorderLayout.SOUTH);
+   }
 
-    private JScrollPane createHallTable(JTable table) {
-        List<Hall> halls = new ArrayList<>();
-        try {
-            halls = Controller.getInstance().getHalls();
-        } catch (Exception ex) {
-            Logger.getLogger(HallPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+   private JScrollPane createHallTable(JTable table) {
+       List<Hall> halls = new ArrayList<>();
+       try {
+           halls = Controller.getInstance().getHalls();
+       } catch (Exception ex) {
+           Logger.getLogger(HallPanel.class.getName()).log(Level.SEVERE, null, ex);
+       }
 
-        model = new TableModelHall(halls);
-        table.setModel(model);
-        table.setRowHeight(25);
+       model = new TableModelHall(halls);
+       table.setModel(model);
+       table.setRowHeight(25);
 
-        return new JScrollPane(table);
-    }
+       return new JScrollPane(table);
+   }
 
-    private JPanel createHallBottomPanel() {
-        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+   private JPanel createHallBottomPanel() {
+       JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
 
-        JButton btnAdd = new JButton("Dodaj");
-        btnEdit = new JButton("Izmeni");
-        btnDelete = new JButton("Obriši");
+       JButton btnAdd = new JButton("Dodaj");
+       btnEdit = new JButton("Izmeni");
+       JButton btnExportJson = new JButton("Izvezi sale u JSON");
+       btnDelete = new JButton("Obriši");
 
-        // Inicijalno onemogući edit i delete dok se ne selektuje red
-        btnEdit.setEnabled(false);
-        btnDelete.setEnabled(false);
+       // Inicijalno onemogući edit i delete dok se ne selektuje red
+       btnEdit.setEnabled(false);
+       btnDelete.setEnabled(false);
 
-        buttonsPanel.add(btnAdd);
-        buttonsPanel.add(btnEdit);
-        buttonsPanel.add(btnDelete);
+       buttonsPanel.add(btnAdd);
+       buttonsPanel.add(btnEdit);
+       buttonsPanel.add(btnDelete);
+       buttonsPanel.add(btnExportJson);
 
-        setupButtonActions(btnAdd, btnEdit, btnDelete);
+       setupButtonActions(btnAdd, btnEdit, btnDelete, btnExportJson);
 
-        return buttonsPanel;
-    }
+       return buttonsPanel;
+   }
 
-    private void setupTableSelectionListener() {
-        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    updateButtonStates();
-                }
-            }
-        });
-    }
+   private void setupTableSelectionListener() {
+       table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+           @Override
+           public void valueChanged(ListSelectionEvent e) {
+               if (!e.getValueIsAdjusting()) {
+                   updateButtonStates();
+               }
+           }
+       });
+   }
 
-    private void updateButtonStates() {
-        int selectedRow = table.getSelectedRow();
-        if (selectedRow == -1) {
-            // Nema selektovanog reda - onemogući dugmad
-            btnEdit.setEnabled(false);
-            btnDelete.setEnabled(false);
-            return;
-        }
+   private void updateButtonStates() {
+       int selectedRow = table.getSelectedRow();
+       if (selectedRow == -1) {
+           // Nema selektovanog reda - onemogući dugmad
+           btnEdit.setEnabled(false);
+           btnDelete.setEnabled(false);
+           return;
+       }
 
-        int modelRow = table.convertRowIndexToModel(selectedRow);
-        Hall selectedHall = model.getHallAt(modelRow);
+       int modelRow = table.convertRowIndexToModel(selectedRow);
+       Hall selectedHall = model.getHallAt(modelRow);
 
-        if (selectedHall != null) {
-            try {
-                boolean hasUpcomingProjections = Controller.getInstance().hasUpcomingProjectionsForHall(selectedHall);
+       if (selectedHall != null) {
+           try {
+               boolean hasUpcomingProjections = Controller.getInstance().hasUpcomingProjectionsForHall(selectedHall);
 
-                // Onemogući edit i delete ako postoje predstojeće projekcije
-                btnEdit.setEnabled(!hasUpcomingProjections);
-                btnDelete.setEnabled(!hasUpcomingProjections);
+               // Onemogući edit i delete ako postoje predstojeće projekcije
+               btnEdit.setEnabled(!hasUpcomingProjections);
+               btnDelete.setEnabled(!hasUpcomingProjections);
 
-            } catch (Exception ex) {
-                Logger.getLogger(HallPanel.class.getName()).log(Level.SEVERE, null, ex);
-                // U slučaju greške, onemogući dugmiće
-                btnEdit.setEnabled(false);
-                btnDelete.setEnabled(false);
-            }
-        }
-    }
+           } catch (Exception ex) {
+               Logger.getLogger(HallPanel.class.getName()).log(Level.SEVERE, null, ex);
+               // U slučaju greške, onemogući dugmiće
+               btnEdit.setEnabled(false);
+               btnDelete.setEnabled(false);
+           }
+       }
+   }
 
-    private void setupButtonActions(JButton btnAdd, JButton btnEdit, JButton btnDelete) {
-        btnAdd.addActionListener(e -> addHall());
-        btnEdit.addActionListener(e -> editHall());
-        btnDelete.addActionListener(e -> deleteHall());
-    }
+   private void setupButtonActions(JButton btnAdd, JButton btnEdit, JButton btnDelete, JButton btnExportJson) {
+       btnAdd.addActionListener(e -> addHall());
+       btnEdit.addActionListener(e -> editHall());
+       btnDelete.addActionListener(e -> deleteHall());
+       btnExportJson.addActionListener(e -> exportHallsToJson());
+   }
 
-    private void addHall() {
-        HallDialog dialog = new HallDialog(
-                (javax.swing.JFrame) SwingUtilities.getWindowAncestor(this),
-                true,
-                model
-        );
-        dialog.setVisible(true);
-        refreshData();
-    }
+   /** Omogucava izbor fajla i izvoz trenutno prikazanih sala u JSON. */
+   private void exportHallsToJson() {
+       JFileChooser fileChooser = new JFileChooser();
+       fileChooser.setDialogTitle("Sacuvaj sale kao JSON");
+       fileChooser.setSelectedFile(new java.io.File("sale.json"));
 
-    private void editHall() {
-        int selectedRow = table.getSelectedRow();
-        if (selectedRow == -1) {
-            return;
-        }
+       if (fileChooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
+           return;
+       }
 
-        int modelRow = table.getSelectedRow();
-        Hall selectedHall = model.getHallAt(modelRow);
+       Path file = fileChooser.getSelectedFile().toPath();
+       if (!file.toString().toLowerCase().endsWith(".json")) {
+           file = Path.of(file.toString() + ".json");
+       }
 
-        HallDialog dialog = new HallDialog(
-                (javax.swing.JFrame) SwingUtilities.getWindowAncestor(this),
-                true,
-                model,
-                selectedHall
-        );
-        dialog.setVisible(true);
-        refreshData();
-    }
+       try {
+           HallJsonExportService.exportHalls(model.getHalls(), file);
+           JOptionPane.showMessageDialog(this,
+                   "Sale su uspesno izvezene u:\n" + file.toAbsolutePath(),
+                   "JSON izvoz",
+                   JOptionPane.INFORMATION_MESSAGE);
+       } catch (Exception ex) {
+           Logger.getLogger(HallPanel.class.getName()).log(Level.SEVERE, "Greska pri JSON izvozu", ex);
+           JOptionPane.showMessageDialog(this,
+                   "JSON fajl nije sacuvan: " + ex.getMessage(),
+                   "Greska",
+                   JOptionPane.ERROR_MESSAGE);
+       }
+   }
 
-    private void deleteHall() {
-        int selectedRow = table.getSelectedRow();
-        if (selectedRow == -1) {
-            return;
-        }
+   private void addHall() {
+       HallDialog dialog = new HallDialog(
+               (javax.swing.JFrame) SwingUtilities.getWindowAncestor(this),
+               true,
+               model
+       );
+       dialog.setVisible(true);
+       refreshData();
+   }
 
-        int modelRow = table.getSelectedRow();
-        Hall hallToDelete = model.getHallAt(modelRow);
+   private void editHall() {
+       int selectedRow = table.getSelectedRow();
+       if (selectedRow == -1) {
+           return;
+       }
 
-        int result = JOptionPane.showConfirmDialog(this,
-                "Da li ste sigurni da želite da obrišete selektovanu salu: '" + hallToDelete.getName() + "'?",
-                "Potvrda brisanja",
-                JOptionPane.YES_NO_OPTION);
+       int modelRow = table.getSelectedRow();
+       Hall selectedHall = model.getHallAt(modelRow);
 
-        if (result == JOptionPane.YES_OPTION) {
-            try {
-                Controller.getInstance().deleteHall(hallToDelete);
-                model.removeHall(hallToDelete);
-                JOptionPane.showMessageDialog(this,
-                        "Sala uspešno obrisana!",
-                        "Uspeh",
-                        JOptionPane.INFORMATION_MESSAGE);
-                refreshData();
-            } catch (Exception ex) {
-                Logger.getLogger(HallPanel.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(this,
-                        "Greška pri brisanju sale: " + ex.getMessage(),
-                        "Greška",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
+       HallDialog dialog = new HallDialog(
+               (javax.swing.JFrame) SwingUtilities.getWindowAncestor(this),
+               true,
+               model,
+               selectedHall
+       );
+       dialog.setVisible(true);
+       refreshData();
+   }
 
-    private void loadHalls() {
-        List<Hall> halls = new ArrayList<>();
-        try {
-            halls = Controller.getInstance().getHalls();
-        } catch (Exception ex) {
-            Logger.getLogger(HallPanel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+   private void deleteHall() {
+       int selectedRow = table.getSelectedRow();
+       if (selectedRow == -1) {
+           return;
+       }
 
-        model.setHalls(halls);
-    }
+       int modelRow = table.getSelectedRow();
+       Hall hallToDelete = model.getHallAt(modelRow);
 
-    public void refreshData() {
-        //loadHalls();
-        // Resetuj selekciju i stanje dugmića nakon osvežavanja
-        table.clearSelection();
-        btnEdit.setEnabled(false);
-        btnDelete.setEnabled(false);
-    }
+       int result = JOptionPane.showConfirmDialog(this,
+               "Da li ste sigurni da želite da obrišete selektovanu salu: '" + hallToDelete.getName() + "'?",
+               "Potvrda brisanja",
+               JOptionPane.YES_NO_OPTION);
+
+       if (result == JOptionPane.YES_OPTION) {
+           try {
+               Controller.getInstance().deleteHall(hallToDelete);
+               model.removeHall(hallToDelete);
+               JOptionPane.showMessageDialog(this,
+                       "Sala uspešno obrisana!",
+                       "Uspeh",
+                       JOptionPane.INFORMATION_MESSAGE);
+               refreshData();
+           } catch (Exception ex) {
+               Logger.getLogger(HallPanel.class.getName()).log(Level.SEVERE, null, ex);
+               JOptionPane.showMessageDialog(this,
+                       "Greška pri brisanju sale: " + ex.getMessage(),
+                       "Greška",
+                       JOptionPane.ERROR_MESSAGE);
+           }
+       }
+   }
+
+   private void loadHalls() {
+       List<Hall> halls = new ArrayList<>();
+       try {
+           halls = Controller.getInstance().getHalls();
+       } catch (Exception ex) {
+           Logger.getLogger(HallPanel.class.getName()).log(Level.SEVERE, null, ex);
+       }
+
+       model.setHalls(halls);
+   }
+
+   public void refreshData() {
+       //loadHalls();
+       // Resetuj selekciju i stanje dugmića nakon osvežavanja
+       table.clearSelection();
+       btnEdit.setEnabled(false);
+       btnDelete.setEnabled(false);
+   }
 }
