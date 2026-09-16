@@ -10,8 +10,10 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ * Predstavlja film sa nazivom, trajanjem, opisom, datumom premijere i zanrovima.
  *
  * @author nkala
+ * @version 1.0
  */
 public class Film implements GenericEntity {
 
@@ -23,9 +25,19 @@ public class Film implements GenericEntity {
     private List<Genre> genres;
 
     // Konstruktori
+    /** Kreira prazan objekat filma. */
     public Film() {
     }
 
+    /**
+     * Kreira film sa svim osnovnim podacima.
+     *
+     * @param title naziv filma
+     * @param duration trajanje filma u minutima
+     * @param description opis filma
+     * @param releaseDate datum premijere
+     * @param genres lista zanrova filma
+     */
     public Film(String title, int duration, String description, LocalDate releaseDate, List<Genre> genres) {
         this.title = title;
         this.duration = duration;
@@ -35,52 +47,64 @@ public class Film implements GenericEntity {
     }
 
     // Getters and setters
+    /** @return identifikator filma. */
     @Override
 	public Long getId() {
         return id;
     }
 
+    /** @param id novi identifikator filma. */
     @Override
 	public void setId(Long id) {
         this.id = id;
     }
 
+    /** @return naziv filma. */
     public String getTitle() {
         return title;
     }
 
+    /** @param title novi naziv filma. */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /** @return trajanje filma u minutima. */
     public int getDuration() {
         return duration;
     }
 
+    /** @param duration novo trajanje filma u minutima. */
     public void setDuration(int duration) {
         this.duration = duration;
     }
 
+    /** @return opis filma. */
     public String getDescription() {
         return description;
     }
 
+    /** @param description novi opis filma. */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /** @return datum premijere filma. */
     public LocalDate getReleaseDate() {
         return releaseDate;
     }
 
+    /** @param releaseDate novi datum premijere. */
     public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
     }
 
+    /** @return lista zanrova filma. */
     public List<Genre> getGenres() {
         return genres;
     }
 
+    /** @param genres nova lista zanrova filma. */
     public void setGenres(List<Genre> genres) {
         this.genres = genres;
     }

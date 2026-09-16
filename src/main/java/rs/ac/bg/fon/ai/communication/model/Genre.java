@@ -8,36 +8,48 @@ import java.sql.ResultSet;
 import java.util.Objects;
 
 /**
+ * Predstavlja zanr filma.
  *
  * @author nkala
+ * @version 1.0
  */
 public class Genre implements GenericEntity {
 
     private Long id;
     private String name;
 
+    /**
+     * Kreira zanr sa unetim nazivom.
+     *
+     * @param name naziv zanra
+     */
     public Genre(String name) {
         this.name = name;
     }
 
+    /** Kreira prazan objekat zanra. */
     public Genre() {
     }
 
     // Getters and setters
+    /** @return identifikator zanra. */
     @Override
 	public Long getId() {
         return id;
     }
 
+    /** @param id novi identifikator zanra. */
     @Override
 	public void setId(Long id) {
         this.id = id;
     }
 
+    /** @return naziv zanra. */
     public String getName() {
         return name;
     }
 
+    /** @param name novi naziv zanra. */
     public void setName(String name) {
         this.name = name;
     }

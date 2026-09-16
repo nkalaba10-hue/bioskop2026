@@ -8,8 +8,13 @@ import java.io.Serializable;
 import java.sql.ResultSet;
 
 /**
+ * Zajednicki ugovor za domenske objekte koji se cuvaju u relacionoj bazi.
+ *
+ * Implementacije opisuju tabelu, SQL delove upita i nacin mapiranja jednog
+ * reda rezultata u domenski objekat.
  *
  * @author nkala
+ * @version 1.0
  */
 public interface GenericEntity extends Serializable {
 

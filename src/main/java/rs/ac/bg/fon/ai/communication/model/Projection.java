@@ -11,8 +11,12 @@ import java.time.LocalTime;
 import java.util.Objects;
 
 /**
+ * Predstavlja termin prikazivanja filma u odredjenoj sali.
+ *
+ * Projekcija sadrzi datum, vreme, cenu, status i broj prodatih karata.
  *
  * @author nkala
+ * @version 1.0
  */
 public class Projection implements GenericEntity {
 
@@ -26,9 +30,19 @@ public class Projection implements GenericEntity {
     private int soldTickets;
 
     // Konstruktori
+    /** Kreira praznu projekciju. */
     public Projection() {
     }
 
+    /**
+     * Kreira aktivnu projekciju sa pocetnim brojem prodatih karata jednakim nuli.
+     *
+     * @param film film koji se prikazuje
+     * @param hall sala u kojoj se projekcija odrzava
+     * @param date datum projekcije
+     * @param time vreme pocetka projekcije
+     * @param price cena jedne karte
+     */
     public Projection(Film film, Hall hall, LocalDate date, LocalTime time, BigDecimal price) {
         this.film = film;
         this.hall = hall;
@@ -40,68 +54,84 @@ public class Projection implements GenericEntity {
     }
 
     // Getters and setters
+    /** @return identifikator projekcije. */
     @Override
 	public Long getId() {
         return id;
     }
 
+    /** @param id novi identifikator projekcije. */
     @Override
 	public void setId(Long id) {
         this.id = id;
     }
 
+    /** @return film koji se prikazuje. */
     public Film getFilm() {
         return film;
     }
 
+    /** @param film film koji se prikazuje. */
     public void setFilm(Film film) {
         this.film = film;
     }
 
+    /** @return sala u kojoj se projekcija odrzava. */
     public Hall getHall() {
         return hall;
     }
 
+    /** @param hall sala u kojoj se projekcija odrzava. */
     public void setHall(Hall hall) {
         this.hall = hall;
     }
 
+    /** @return datum projekcije. */
     public LocalDate getDate() {
         return date;
     }
 
+    /** @param date novi datum projekcije. */
     public void setDate(LocalDate date) {
         this.date = date;
     }
 
+    /** @return vreme pocetka projekcije. */
     public LocalTime getTime() {
         return time;
     }
 
+    /** @param time novo vreme pocetka projekcije. */
     public void setTime(LocalTime time) {
         this.time = time;
     }
 
+    /** @return trenutni status projekcije. */
     public ProjectionStatus getStatus() {
         return status;
     }
 
+    /** @param status novi status projekcije. */
     public void setStatus(ProjectionStatus status) {
         this.status = status;
     }
 
+    /** @return cena jedne karte. */
     public BigDecimal getPrice() {
         return price;
     }
 
+    /** @param price nova cena jedne karte. */
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
+    /** @return broj prodatih karata. */
     public int getSoldTickets() {
         return soldTickets;
     }
 
+    /** @param soldTickets novi broj prodatih karata. */
     public void setSoldTickets(int soldTickets) {
         this.soldTickets = soldTickets;
     }

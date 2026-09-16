@@ -8,8 +8,10 @@ import java.sql.ResultSet;
 import java.util.Objects;
 
 /**
+ * Predstavlja zaposlenog koji moze da se sacuva i ucita iz baze podataka.
  *
  * @author nkala
+ * @version 1.0
  */
 public class Employee implements GenericEntity {
 
@@ -19,9 +21,18 @@ public class Employee implements GenericEntity {
     private String username;
     private String password;
 
+    /** Kreira prazan objekat zaposlenog. */
     public Employee() {
     }
 
+    /**
+     * Kreira zaposlenog sa imenom, prezimenom i podacima za prijavljivanje.
+     *
+     * @param firstname ime zaposlenog
+     * @param lastname prezime zaposlenog
+     * @param username korisnicko ime
+     * @param password lozinka
+     */
     public Employee(String firstname, String lastname, String username, String password) {
         this.firstname = firstname;
         this.lastname = lastname;
@@ -30,44 +41,54 @@ public class Employee implements GenericEntity {
     }
 
     // Getters and setters
+    /** @return jedinstveni identifikator zaposlenog. */
     @Override
 	public Long getId() {
         return id;
     }
 
+    /** @param id novi identifikator zaposlenog. */
     @Override
 	public void setId(Long id) {
         this.id = id;
     }
 
+    /** @return ime zaposlenog. */
     public String getFirstname() {
         return firstname;
     }
 
+    /** @param firstname novo ime zaposlenog. */
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
 
+    /** @return prezime zaposlenog. */
     public String getLastname() {
         return lastname;
     }
 
+    /** @param lastname novo prezime zaposlenog. */
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
 
+    /** @return korisnicko ime zaposlenog. */
     public String getUsername() {
         return username;
     }
 
+    /** @param username novo korisnicko ime. */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /** @return lozinka zaposlenog. */
     public String getPassword() {
         return password;
     }
 
+    /** @param password nova lozinka. */
     public void setPassword(String password) {
         this.password = password;
     }

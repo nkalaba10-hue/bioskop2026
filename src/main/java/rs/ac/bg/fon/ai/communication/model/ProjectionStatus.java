@@ -7,8 +7,10 @@ package rs.ac.bg.fon.ai.communication.model;
 import java.sql.ResultSet;
 
 /**
+ * Navodi moguce statuse projekcije: aktivna, zavrsena ili rasprodata.
  *
  * @author nkala
+ * @version 1.0
  */
 public enum ProjectionStatus implements GenericEntity{
     ACTIVE,PAST,SOLD_OUT;

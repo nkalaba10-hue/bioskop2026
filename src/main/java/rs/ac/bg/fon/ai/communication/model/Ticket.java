@@ -9,11 +9,14 @@ import java.sql.ResultSet;
 import java.util.Objects;
 
 /**
+ * Predstavlja kartu za jednu projekciju koja pripada odredjenom racunu.
  *
  * @author nkala
+ * @version 1.0
  */
 public class Ticket implements GenericEntity {
 
+    /** Moguce akcije koje se mogu izvrsiti nad tiketom. */
     public enum Action {
         ADD, DELETE, UPDATE, NONE
     }
@@ -21,10 +24,12 @@ public class Ticket implements GenericEntity {
     private Action action = Action.NONE;
 
     // ... ostala polja
+    /** @return akcija koja je oznacena nad tiketom. */
     public Action getAction() {
         return action;
     }
 
+    /** @param action nova akcija nad tiketom. */
     public void setAction(Action action) {
         this.action = action;
     }
@@ -35,45 +40,61 @@ public class Ticket implements GenericEntity {
     private Bill bill; // račun kome pripada
 
     // Konstruktori
+    /** Kreira prazan tiket. */
     public Ticket() {
     }
 
+    /**
+     * Kreira tiket za projekciju po zadatoj ceni i vezuje ga za racun.
+     *
+     * @param projection projekcija za koju se tiket izdaje
+     * @param price cena tiketa
+     * @param bill racun kome tiket pripada
+     */
     public Ticket(Projection projection, BigDecimal price, Bill bill) {
         this.projection = projection;
         this.price = price;
         this.bill = bill;
     }
 
+    /** @return identifikator tiketa. */
     @Override
 	public Long getId() {
         return id;
     }
 
+    /** @param id novi identifikator tiketa. */
     @Override
 	public void setId(Long id) {
         this.id = id;
     }
 
+    /** @return projekcija za koju tiket vazi. */
     public Projection getProjection() {
         return projection;
     }
 
+    /** @param projection projekcija za koju tiket vazi. */
     public void setProjection(Projection projection) {
         this.projection = projection;
     }
 
+    /** @return cena tiketa. */
     public BigDecimal getPrice() {
         return price;
     }
 
+    /** @param price nova cena tiketa. */
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
+    /** @return racun kome tiket pripada. */
     public Bill getBill() {
         return bill;
     }
 
+    /** @param bill racun kome tiket pripada. */
     public void setBill(Bill bill) {
         this.bill = bill;
     }

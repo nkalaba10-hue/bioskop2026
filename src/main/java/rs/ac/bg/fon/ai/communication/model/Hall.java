@@ -8,8 +8,10 @@ import java.sql.ResultSet;
 import java.util.Objects;
 
 /**
+ * Predstavlja bioskopsku salu sa nazivom i kapacitetom.
  *
  * @author nkala
+ * @version 1.0
  */
 public class Hall implements GenericEntity {
 
@@ -17,14 +19,28 @@ public class Hall implements GenericEntity {
     private String name;
     private int capacity;
 
+    /** Kreira praznu bioskopsku salu. */
     public Hall() {
     }
 
+    /**
+     * Kreira salu sa nazivom i kapacitetom.
+     *
+     * @param name naziv sale
+     * @param capacity broj mesta u sali
+     */
     public Hall(String name, int capacity) {
         this.name = name;
         this.capacity = capacity;
     }
 
+    /**
+     * Kreira salu sa identifikatorom, nazivom i kapacitetom.
+     *
+     * @param id identifikator sale
+     * @param name naziv sale
+     * @param capacity broj mesta u sali
+     */
     public Hall(Long id, String name, int capacity) {
         this.id = id;
         this.name = name;
@@ -32,28 +48,34 @@ public class Hall implements GenericEntity {
     }
     
     // Getters and setters
+    /** @return identifikator sale. */
     @Override
 	public Long getId() {
         return id;
     }
 
+    /** @param id novi identifikator sale. */
     @Override
 	public void setId(Long id) {
         this.id = id;
     }
 
+    /** @return naziv sale. */
     public String getName() {
         return name;
     }
 
+    /** @param name novi naziv sale. */
     public void setName(String name) {
         this.name = name;
     }
 
+    /** @return kapacitet sale, odnosno broj mesta. */
     public int getCapacity() {
         return capacity;
     }
 
+    /** @param capacity novi kapacitet sale. */
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }

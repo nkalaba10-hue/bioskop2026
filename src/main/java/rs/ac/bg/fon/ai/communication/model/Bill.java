@@ -13,8 +13,13 @@ import java.util.Objects;
 
 
 /**
+ * Predstavlja racun izdat za jednu ili vise prodatih karata.
+ *
+ * Racun sadrzi datum i vreme izdavanja, tikete, ukupan iznos i zaposlenog
+ * koji ga je sacuvao.
  *
  * @author nkala
+ * @version 1.0
  */
 public class Bill implements GenericEntity {
 
@@ -25,9 +30,18 @@ public class Bill implements GenericEntity {
     private Employee savedBy;
 
     // Konstruktori
+    /** Kreira prazan racun. */
     public Bill() {
     }
 
+    /**
+     * Kreira racun sa svim osnovnim podacima.
+     *
+     * @param dateTime datum i vreme izdavanja racuna
+     * @param tickets tiketi na racunu
+     * @param totalAmount ukupan iznos racuna
+     * @param savedBy zaposleni koji je izdao racun
+     */
     public Bill(LocalDateTime dateTime, List<Ticket> tickets, BigDecimal totalAmount, Employee savedBy) {
         this.dateTime = dateTime;
         this.tickets = tickets;
@@ -36,44 +50,54 @@ public class Bill implements GenericEntity {
     }
 
     // Getters and setters
+    /** @return identifikator racuna. */
     @Override
 	public Long getId() {
         return id;
     }
 
+    /** @param id novi identifikator racuna. */
     @Override
 	public void setId(Long id) {
         this.id = id;
     }
 
+    /** @return datum i vreme izdavanja racuna. */
     public LocalDateTime getDateTime() {
         return dateTime;
     }
 
+    /** @param dateTime novi datum i vreme izdavanja racuna. */
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
+    /** @return lista tiketa na racunu. */
     public List<Ticket> getTickets() {
         return tickets;
     }
 
+    /** @param tickets nova lista tiketa na racunu. */
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
     }
 
+    /** @return ukupan iznos racuna. */
     public BigDecimal getTotalAmount() {
         return totalAmount;
     }
 
+    /** @param totalAmount novi ukupan iznos racuna. */
     public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
     }
 
+    /** @return zaposleni koji je sacuvao racun. */
     public Employee getSavedBy() {
         return savedBy;
     }
 
+    /** @param savedBy zaposleni koji je sacuvao racun. */
     public void setSavedBy(Employee savedBy) {
         this.savedBy = savedBy;
     }
